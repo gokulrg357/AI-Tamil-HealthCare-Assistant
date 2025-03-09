@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<style>
+              @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+
+  
+  font-family: "Poppins", sans-serif;
+}
+
+    body{
+       
+        background-color: #ccc;
+        background-position: center;
+        
+        background-size: cover;
+        height: 100vh;
+    }
+
+    /* Your existing styles... */
+
+    .chatbox {
+
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+    margin: 0 auto; 
+    margin-top: 50px;
+    background-color: white;
+}
+
+.botText {
+    margin: 10px 0;
+    margin-bottom: 20px;
+    
+}
+
+#text {
+    width: 300px; /* Set the desired width */
+    margin: 0 auto; /* Center the input horizontally */
+    display: block;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.btn {
+    width: 100px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin: 0 auto; /* Center the button */
+    margin-bottom: 20px;
+    font-weight: bold;
+   
+   
+}
+
+.btn-warning {
+    background-color: #fed350; /* Button color */
+    color: black;
+}
+
+.btn-warning:hover {
+    background-color: #ff9800; /* Button hover color */
+}
+.btn1{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+
+.btn1:hover {
+    background-color: #ff9800; /* Button hover color */
+}
+#audio {
+  display: none;
+}
+.userText {
+            text-align: right;
+            margin-right: 10px;
+            color: blue;
+            font-weight: bold;
+        
+            
+            
+ }
+
+.botText {
+            text-align: left;
+            margin-left: 10px;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        
+           
+        }
+.container{
+    
+    padding: 15px;
+    border-radius: 5px;
+   
+}
+.voice{
+    text-decoration: none;
+    color: white;
+    
+   
+}
+.voc{
+    
+    background-color: #3400cf;
+    width: fit-content;
+    padding: 8px;
+    border-radius: 5px;
+    margin-left: 615px;
+    
+}
+.voc:hover{
+    background-color: #7760bb;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.log{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+   background-color: #fed350;
+   width: fit-content;
+   padding: 8px;
+   border-radius: 5px;
+}
+.log:hover {
+    background-color: #ff9800; /* Button hover color */
+}
+ .options{
+    margin-top: 20px;
+ }
+
+
+.options a {
+    margin-left: 615px;
+    color: rgb(0, 0, 0);
+}
+.options a:hover{
+    color: rgb(36, 3, 65);
+}
+.upload{
+    position: relative;
+    bottom: 123px;
+    left: 303px;
+   
+    margin-left: 500px;
+}
+.upload img{
+    
+  
+    width: 45px;
+    height: 47px;
+    
+}
+input[type='submit']{
+    position: relative;
+    bottom: 19px;
+    left: 10px;
+   
+    border: none;
+    background-color: #3400cf;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+
+}
+input[type='submit']:hover{
+    background-color: #3e1ba7;
+}
+.botTextTitle{
+    font-weight: bold;
+}
+#titleContent1,#descContent1,#preventContent1{
+    font-weight: bold;
+}
+.speech {
+
+    text-align: right;
+            margin-right: 10px;
+            color: blue;
+            font-weight: bold;
+}
+
+.result {
+    text-align: left;
+            margin-left: 10px;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+}
+.header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .sub-header {
+            background-color: #ff5733;
+            color: white;
+            text-align: center;
+            padding: 5px;
+        }
+</style>
+
+<body>
+    <div class="header">
+        <img src="https://doctorspost.in/wp-content/uploads/2024/07/TN-Health-Department.jpg" style="height: 60px; vertical-align: middle;">
+        <h1 id="title">Health & Family Welfare Department</h1>
+        <p id="govt">Government of Tamil Nadu</p>
+        <a href="/" style="cursor: pointer;"><button>Back/பின் செல்ல</button></a>
+       
+    </div>
+    <div class="sub-header" id="subHeader">Committed to building healthy people</div>
+    <div class="container">
+    <div class="row">
+        <form id="chatForm" action="/submit" method="POST" enctype="multipart/form-data">
+            <div class="form-wrapper">
+                <div id="chatbox" class="chatbox"> <!-- Apply chatbox styles -->
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <p class="botText"><span>வணக்கம் நான் உங்கள் ChatBot...</span></p>
+                        <div class="bubble speech">You: {{speech}}</div>
+                        <div class="bubble result">Me: {{result}}</div>
+                    </div>
+                </div>
+                <div id="userInput" class="row">
+                    <div class="col-md-10">
+                        <div>
+                            <div class="box">
+                            <b><br><input id="text" type="text" name="msg" placeholder="Start Your Chat Here">
+                                  <button type="button" id="send" class="btn btn-warning" onclick="sendMessage()">
+                                Submit
+                            </button> 
+                        </div>
+                                
+                                         
+                                
+                            </div>
+                            <div class="conversation">
+                                
+                                 
+                                  {% if audio_file %}
+                                    <audio id="response-audio" controls autoplay style="display: none;">
+                                   <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3"> Your browser does not support the audio element.
+                                </audio>   
+                                    {% endif %}
+                            
+                          
+                           <div class="voc">
+                            <a href="/speaktamil" style="color: white;">குரல் உதவியாளர்</a>
+                           </div>
+                            
+                        </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div> 
+<script>
+    $(document).ready(function () {
+        function sendMessage() {
+            var rawText = $("#text").val();
+            var userHtml = '<p class="userText">You: <span>' + rawText + "</span></p>";
+            $("#text").val("");
+            $("#chatbox").append(userHtml);
+            document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+    
+            $.ajax({
+                data: { msg: rawText },
+                type: "POST",
+                url: "/get",
+            }).done(function (data) {
+                var botHtml = '<p class="botText">Bot: <span>' + data.response + "</span></p>";
+                $("#chatbox").append($.parseHTML(botHtml));
+                document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+            });
+        }
+    
+        $("#send").on("click", function () {
+            sendMessage();
+        });
+    
+        $("#text").keypress(function(event) {
+            if (event.which == 13) {
+                sendMessage();
+                event.preventDefault();
+            }
+        });
+    });
+    </script>
+    
+<script>
+    $(document).ready(function () {
+    $(".voice").on("click", function (event) {
+        event.preventDefault(); // Prevent default link behavior
+        $(".options").toggle(); // Toggle the visibility of options
+    });
+});
+</script>
+<script>
+    $(document).ready(function () {
+    // Bind click event to the button
+    $("#send").on("click", function () {
+        sendMessage(); // Call the sendMessage function when button clicked
+    });
+});
+</script>
+<script>
+    document.getElementById('file-image').addEventListener('click', function() {
+        document.getElementById('actual-btn').click();
+    });
+
+    document.getElementById('actual-btn').addEventListener('change', function() {
+        var fileName = this.value.split('\\').pop();
+        document.getElementById('file-chosen').textContent = fileName || "No file chosen";
+    });
+</script>
+<script>
+    window.onload = function() {
+        var titleImage = document.getElementById('titleImage').innerHTML;
+        var titleContent = document.getElementById('titleContent').innerHTML;
+        var descContent = document.getElementById('descContent').innerHTML;
+        var preventContent = document.getElementById('preventContent').innerHTML;
+        
+
+
+        if (titleContent.trim() !== '') {
+            document.getElementById('titleParagraph').style.display = 'block';
+            document.getElementById('titleContent').style.display = 'block';
+            document.getElementById('titleContent1').style.display = 'block';
+            document.getElementById('titleimage1').style.display = 'block';
+            
+        }
+
+        if (descContent.trim() !== '') {
+            document.getElementById('descParagraph').style.display = 'block';
+            document.getElementById('descContent').style.display = 'block';
+            document.getElementById('descContent1').style.display = 'block';
+        }
+
+        if (preventContent.trim() !== '') {
+            document.getElementById('preventParagraph').style.display = 'block';
+            document.getElementById('preventContent').style.display = 'block';
+            document.getElementById('preventContent1').style.display = 'block';
+        }
+    };
+</script>
+
+
+
+</body>
+
+</html>

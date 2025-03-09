@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Family Welfare Department</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+      import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+  
+      // Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyCRXajBwbFuHsCa2OEBXaF1L0kxMiRmJGA",
+          authDomain: "firetony-f058c.firebaseapp.com",
+          databaseURL: "https://firetony-f058c-default-rtdb.firebaseio.com",
+          projectId: "firetony-f058c",
+          storageBucket: "firetony-f058c.firebasestorage.app",
+          messagingSenderId: "976651795537",
+          appId: "1:976651795537:web:080638e4eddadda4a50c70"
+      };
+  
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+  
+      // Function to proceed and save data
+      async function proceedAction() {
+          try {
+              let selectedSymptoms = [];
+              
+              // Collect checked symptoms
+              document.querySelectorAll('#symptomChecklist input:checked').forEach((checkbox) => {
+                  selectedSymptoms.push(checkbox.parentElement.textContent.trim());
+              });
+  
+              if (selectedSymptoms.length === 0) {
+                  alert("Please select at least one symptom.");
+                  return;
+              }
+  
+              // Save data to Firestore
+              await addDoc(collection(db, "symptom_reports"), {
+                  symptoms: selectedSymptoms,
+                  timestamp: serverTimestamp()
+              });
+  
+              alert("Symptoms data saved successfully!");
+          } catch (error) {
+              console.error("Error saving data: ", error);
+              alert("Error saving data. Please try again.");
+          }
+      }
+  
+      // Expose function globally so the button can call it
+      window.proceedAction = proceedAction;
+    </script>
+  
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa;
+        }
+        .header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .sub-header {
+            background-color: #ff5733;
+            color: white;
+            text-align: center;
+            padding: 5px;
+        }
+        .container {
+            display: flex;
+            margin: 20px;
+        }
+        .sidebar {
+            width: 25%;
+            background-color: #00bcd4;
+            padding: 15px;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background-color: #00796b;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .symptoms-form {
+    display: none;
+    padding: 20px;
+    background-color: #ffccbc;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.symptoms-form h3 {
+    margin-bottom: 15px;
+    color: #d84315;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#symptomChecklist {
+    column-count: 2; /* Creates two columns */
+    column-gap: 20px; /* Space between columns */
+}
+
+label {
+    display: block;
+    break-inside: avoid; /* Prevents labels from breaking across columns */
+    margin-bottom: 10px; /* Adds spacing between each symptom */
+}
+
+
+.symptom-label span {
+    flex: 1;
+    font-weight: bold;
+}
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+        .toggle-btn {
+            padding: 12px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+        }
+    
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+        .proceed-btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .notifications {
+            background-color: #66BB6A; /* Light Green Background */
+            border-left: 6px solid #388E3C; /* Dark Green Border */
+            color: #FFFFFF; /* White Text */
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 90%;
+            margin: 10px auto;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://doctorspost.in/wp-content/uploads/2024/07/TN-Health-Department.jpg" style="height: 60px; vertical-align: middle;">
+        <h1 id="title">Health & Family Welfare Department</h1>
+        <p id="govt">Government of Tamil Nadu</p>
+        <button class="toggle-btn" onclick="toggleLanguage()">தமிழ் / English</button>
+    </div>
+    <div class="sub-header" id="subHeader">Committed to building healthy people</div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <a href="#" id="menu1">Profile</a>
+            <a href="#" id="menu2">Health Tips</a>
+            <a href="#" id="menu3">Nearby Hospitals</a>
+            <a href="#" id="menu4">Aided Projects</a>
+            <a href="#" id="menu5">Health Services</a>
+            <a href="#" id="menu6">Blacklisted Firms</a>
+            <a href="#" id="menu7" onclick="showSymptoms()">Fever Symptoms</a>
+            <a href="#" id="menu8">Vector Borne Diseases</a>
+            <a href="#" id="menu9">Air Borne Diseases</a>
+            <a href="#" id="menu10">Help and Support</a>
+            <a href="/chatbot" id="menu11">Chatbot</a>
+        </div>
+        
+        <div class="content">
+            <div class="notifications">
+                <h2 id="notifTitle">Notifications</h2>
+                <p id="notif1">The purpose of this technology is to accurately identify your symptoms, analyze the underlying condition or issue affecting you, and provide treatment recommendations based on the findings.</p>
+            </div>
+
+            <!-- Symptoms Form -->
+            <div class="symptoms-form" id="symptomsForm">
+                <h3 id="symptomTitle">Select Symptoms</h3>
+                <form id="symptomChecklist">
+                    <label><span id="symptom1">Fever:</span><br>
+                        <input type="radio" name="symptom1" value="1"><span id="symptom22">Yes</span>
+                        <input type="radio" name="symptom1" value="0"><span id="symptom23">No</span> 
+                    </label><br>
+                    <label><span id="symptom2">Headache:</span><br>
+                        <input type="radio" name="symptom2" value="1"><span id="symptom24">Yes</span>
+                        <input type="radio" name="symptom2" value="0"><span id="symptom25">No</span> 
+                    </label><br>
+                    <label><span id="symptom3">Stomach Pain:</span><br>
+                        <input type="radio" name="symptom3" value="1"><span id="symptom26">Yes</span>
+                        <input type="radio" name="symptom3" value="0"><span id="symptom27">No</span> 
+                    </label><br>
+                    <label><span id="symptom4">Muscle Pain:</span><br>
+                        <input type="radio" name="symptom4" value="1"><span id="symptom28">Yes</span>
+                        <input type="radio" name="symptom4" value="0"><span id="symptom29">No</span> 
+                    </label><br>
+                    <label><span id="symptom5">Fatigue:</span><br>
+                        <input type="radio" name="symptom5" value="1"><span id="symptom30">Yes</span>
+                        <input type="radio" name="symptom5" value="0"><span id="symptom31">No</span> 
+                    </label><br>
+                    <label><span id="symptom6">Vomiting:</span><br>
+                        <input type="radio" name="symptom6" value="1"><span id="symptom32">Yes</span>
+                        <input type="radio" name="symptom6" value="0"><span id="symptom33">No</span> 
+                    </label><br>
+                    <label><span id="symptom7">Rashes:</span><br>
+                        <input type="radio" name="symptom7" value="1"><span id="symptom34">Yes</span>
+                        <input type="radio" name="symptom7" value="0"><span id="symptom35">No</span> 
+                    </label><br>
+                    <label><span id="symptom8">Bleeding From Nose:</span><br>
+                        <input type="radio" name="symptom8" value="1"><span id="symptom36">Yes</span>
+                        <input type="radio" name="symptom8" value="0"><span id="symptom37">No</span>  
+                    </label><br>
+                    <label><span id="symptom9">Bleeding From Gums:</span><br>
+                        <input type="radio" name="symptom9" value="1"><span id="symptom38">Yes</span>
+                        <input type="radio" name="symptom9" value="0"><span id="symptom39">No</span> 
+                    </label><br>
+                    <label><span id="symptom10">Joint Pain:</span><br>
+                        <input type="radio" name="symptom10" value="1"><span id="symptom40">Yes</span>
+                        <input type="radio" name="symptom10" value="0"><span id="symptom41">No</span> 
+                    </label><br>
+                    <label><span id="symptom11">Eye Pain:</span><br>
+                        <input type="radio" name="symptom11" value="1"><span id="symptom42">Yes</span>
+                        <input type="radio" name="symptom11" value="0"><span id="symptom43">No</span> 
+                    </label><br>
+                    <label><span id="symptom12">High Fever:</span><br>
+                        <input type="radio" name="symptom12" value="1"><span id="symptom44">Yes</span>
+                        <input type="radio" name="symptom12" value="0"><span id="symptom45">No</span> 
+                    </label><br>
+                    <label><span id="symptom13">Skin Rashes:</span><br>
+                        <input type="radio" name="symptom13" value="1"><span id="symptom46">Yes</span>
+                        <input type="radio" name="symptom13" value="0"><span id="symptom47">No</span> 
+                    </label><br>
+                    <label><span id="symptom14">Abdominal Pain:</span><br>
+                        <input type="radio" name="symptom14" value="1"><span id="symptom48">Yes</span>
+                        <input type="radio" name="symptom14" value="0"><span id="symptom49">No</span> 
+                    </label><br>
+                    <label><span id="symptom15">Chest Pain:</span><br>
+                        <input type="radio" name="symptom15" value="1"><span id="symptom50">Yes</span>
+                        <input type="radio" name="symptom15" value="0"><span id="symptom51">No</span> 
+                    </label><br>
+                    <label><span id="symptom16">Eye Redness:</span><br>
+                        <input type="radio" name="symptom16" value="1"><span id="symptom52">Yes</span>
+                        <input type="radio" name="symptom16" value="0"><span id="symptom53">No</span> 
+                    </label><br>
+                    <label><span id="symptom17">Cough:</span><br>
+                        <input type="radio" name="symptom17" value="1"><span id="symptom54">Yes</span>
+                        <input type="radio" name="symptom17" value="0"><span id="symptom55">No</span> 
+                    </label><br>
+                    <label><span id="symptom18">Nausea and Vomiting:</span><br>
+                        <input type="radio" name="symptom18" value="1"><span id="symptom56">Yes</span>
+                        <input type="radio" name="symptom18" value="0"><span id="symptom57">No</span> 
+                    </label><br>
+                    <label><span id="symptom19">Severe Headache</span><br>
+                        <input type="radio" name="symptom19" value="1"><span id="symptom58">Yes</span>
+                        <input type="radio" name="symptom19" value="0"><span id="symptom59">No</span> 
+                    </label><br>
+                    <label><span id="symptom20">Throat</span> <br>
+                        <input type="radio" name="symptom20" value="1"><span id="symptom60">Yes</span>
+                        <input type="radio" name="symptom20" value="0"><span id="symptom61">No</span> 
+                    </label><br>
+                    <label><span id="symptom21">Difficulty Breathing:</span><br>
+                        <input type="radio" name="symptom21" value="1"><span id="symptom62">Yes</span>
+                        <input type="radio" name="symptom21" value="0"><span id="symptom63">No</span> 
+                    </label><br>
+                </form>
+                <button type="button" class="proceed-btn"><span id="symptom64">Proceed</span></button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+
+
+            document.querySelector(".proceed-btn").addEventListener("click", function() {
+                let selectedSymptoms = [];
+
+                document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                    if (input.value === "1") {
+                        selectedSymptoms.push(input.parentElement.textContent.trim().split(":")[0].toLowerCase());
+                    }
+                });
+
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ symptoms: selectedSymptoms })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.predicted_disease) {
+                        alert("Prediction failed. Please try again.");
+                        return;
+                    }
+
+                    // Construct query string
+                    let queryString = `disease=${encodeURIComponent(data.predicted_disease)}`;
+
+                    // Ensure suggestions exist before adding them
+                    if (data.suggestions && Object.keys(data.suggestions).length > 0) {
+                        for (let key in data.suggestions) {
+                            queryString += `&${key}=${encodeURIComponent(data.suggestions[key])}`;
+                        }
+                    }
+
+                    console.log("Redirecting to:", `/result?${queryString}`);  // Debugging output
+                    window.location.href = `/result?${queryString}`;
+                })
+                .catch(error => console.error("Error:", error));
+            });
+
+
+
+        let isEnglish = true;
+
+        function toggleLanguage() {
+            isEnglish = !isEnglish;
+
+            document.getElementById("title").innerText = isEnglish ? "ஆரோக்கியம் மற்றும் குடும்ப நலத்துறை" : "Health & Family Welfare Department";
+            document.getElementById("govt").innerText = isEnglish ? "தமிழ்நாடு அரசு" : "Government of Tamil Nadu";
+            document.getElementById("subHeader").innerText = isEnglish ? "மக்களின் ஆரோக்கியத்தை மேம்படுத்துதல்" : "Committed to building healthy people";
+            document.getElementById("menu1").innerText = isEnglish ? "சுயவிவரம்" : "Profile";
+            document.getElementById("menu2").innerText = isEnglish ? "ஆரோக்கிய குறிப்புகள்" : "Health Tips";
+            document.getElementById("menu3").innerText = isEnglish ? "அருகிலுள்ள மருத்துவமனைகள்" : "Nearby Hospitals";
+            document.getElementById("menu4").innerText = isEnglish ? "உதவி திட்டங்கள்" : "Aided Projects";
+            document.getElementById("menu5").innerText = isEnglish ? "ஆரோக்கிய சேவைகள்" : "Health Services";
+            document.getElementById("menu6").innerText = isEnglish ? "கருப்பு பட்டியலிடப்பட்ட நிறுவனங்கள்" : "Blacklisted Firms";
+            document.getElementById("menu7").innerText = isEnglish ? "காய்ச்சல் அறிகுறிகள்" : "Fever Symptoms";
+            document.getElementById("menu8").innerText = isEnglish ? "காற்றில் பரவும் நோய்கள்" : "Air Borne Diseases";
+            document.getElementById("menu9").innerText = isEnglish ? "நீர் மூலம் பரவும் நோய்கள்" : "Water Borne Diseases";
+            document.getElementById("menu10").innerText = isEnglish ? "உதவி மற்றும் ஆதரவு" : "Help and Support";
+            document.getElementById("menu11").innerText = isEnglish ? "சட்பொட்" : "Chatbot";
+
+            document.getElementById("symptomTitle").innerText = isEnglish ? "அறிகுறிகளைத் தேர்வு செய்க" : "Select Symptoms";
+
+            // Update Notification
+            document.getElementById("notifTitle").innerText = isEnglish ? "அறிவிப்புகள்" : "Notifications";
+            document.getElementById("notif1").innerText = isEnglish? "இந்த தொழில்நுட்பத்தின் நோக்கம், உங்கள் அடையாளமிடப்பட்ட அறிகுறிகளை சரியாக கண்டறிந்து, உங்களை பாதிக்கும் அடிப்படை நிலை அல்லது பிரச்சினையை பகுப்பாய்வு செய்து, கண்டறியப்பட்ட முடிவுகளின் அடிப்படையில்  சிகிச்சை பரிந்துரைகளை வழங்குவதாகும்.": "The purpose of this technology is to accurately identify your symptoms, analyze the underlying condition or issue affecting you, and provide treatment recommendations based on the findings.";
+
+            // Update symptom labels
+            let symptoms = [
+                ["Fever", "காய்ச்சல்"],
+                ["Headache", "தலைவலி"],
+                ["Stomach Pain", "வயிற்று வலி"],
+                ["Muscle Pain", "தசை வலி"],
+                ["Fatigue", "சோர்வு"],
+                ["Vomiting", "வாந்தி"],
+                ["Rashes", "தோல் நோய்"],
+                ["Bleeding From Nose", "மூக்கிலிருந்து இரத்தம்"],
+                ["Bleeding From Gums", "பற்களில் இருந்து இரத்தம்"],
+                ["Joint Pain", "மூட்டு வலி"],
+                ["Eye Pain", "கண் வலி"],
+                ["High Fever", "உயர் காய்ச்சல்"],
+                ["Skin Rashes", "தோல் சினப்பு"],
+                ["Abdominal Pain","குடல் வலி"],
+                ["Chest Pain", "மார்பு வலி"],
+                ["Eye Redness", "கண் சிவப்பு"],
+                ["Cough", "இருமல்"],
+                ["Nausea and Vomiting", "வயிற்றுப் போக்கு மற்றும் வாந்தி"],
+                ["Severe Headache", "கடுமையான தலைவலி"],
+                ["Sore Throat", "தொண்டை வலி"],
+                ["Difficulty Breathing", "சுவாசிப்பதில் சிரமம்"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Yes", "ஆம்",],
+                ["No", "இல்லை"],
+                ["Proceed", "தொடரவும்"]
+
+            ];
+
+            for (let i = 0; i < symptoms.length; i++) {
+                document.getElementById("symptom" + (i + 1)).innerText = isEnglish ? symptoms[i][1] : symptoms[i][0];
+            }
+        }
+
+        function showSymptoms() {
+            document.getElementById("symptomsForm").style.display = "block";
+        }
+    
+        function proceedActions() {
+    // Initialize an object to store the symptoms
+            var symptoms = {};
+
+            // Loop through each checkbox and add the selected symptoms to the object
+            for (var i = 1; i <= 21; i++) {
+                var symptomKey = "symptom" + i;
+                symptoms[symptomKey] = document.getElementById(symptomKey).checked ? 1 : 0;
+            }
+
+            // Send the selected symptoms to the backend for prediction
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(symptoms),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle the response from the backend (e.g., display prediction result)
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+
+        }
+
+        body {
+            text-align: center;
+            padding: 50px;
+            background-color: #28a745;
+        }
+
+        .result-container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 50%;
+            margin: auto;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+        }
+
+        .disease-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0800;
+
+        }
+
+        ul {
+            list-style-type: none; /* Remove default bullets */
+            padding: 0;
+            text-align: left;
+            display: inline-block;
+            width: 100%;
+        }
+
+        ul li {
+            font-size: 16px;
+            padding: 5px 0;
+            text-align: left;
+        }
+
+        .home-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .home-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h2>கணிக்கப்பட்ட நோய் (Predicted Disease):</h2>
+        <p class="disease-name" id="diseaseName">Loading...</p>
+
+        <h3>பரிந்துரைகள்(Suggestions):</h3>
+        <ul id="suggestionsList"></ul>
+
+        <button class="home-btn" onclick="goHome()">Go Back(திரும்பி செல்)</button>
+    </div>
+
+    <script>
+        // Function to extract query parameters
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) ? decodeURIComponent(urlParams.get(name)) : null;
+        }
+
+        // Display the predicted disease
+        document.getElementById("diseaseName").textContent = getQueryParameter("disease") || "No prediction available";
+
+        // Display suggestions dynamically
+        const suggestionsList = document.getElementById("suggestionsList");
+        const suggestionKeys = ["prevention", "severity", "doctor_check", "medication", "lifestyle"];
+
+        let count = 1; // Start numbering from 1
+
+        suggestionKeys.forEach(key => {
+            const value = getQueryParameter(key);
+            if (value) {
+                let listItem = document.createElement("li");
+                listItem.textContent = `${count}. ${value}`;
+                suggestionsList.appendChild(listItem);
+                count++; // Increment count for the next suggestion
+            }
+        });
+
+        // If no suggestions are found, show a default message
+        if (suggestionsList.childElementCount === 0) {
+            suggestionsList.innerHTML = "<li>பரிந்துரைகள் எதுவும் இல்லை(No suggestions available)</li>";
+        }
+
+        // Function to go back to the main page
+        function goHome() {
+            window.location.href = "/index1";
+        }
+    </script>
+
+</body>
+</html>
